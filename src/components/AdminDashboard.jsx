@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import './AdminDashboard.css';
 
@@ -10,7 +9,11 @@ const AdminDashboard = () => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [behanceLink, setBehanceLink] = useState('');
-  const [images, setImages] = useState([]);
+  const [figmaLink, setFigmaLink] = useState('');
+  const [image1, setImage1] = useState('');
+  const [image2, setImage2] = useState('');
+  const [image3, setImage3] = useState('');
+  
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,7 +21,6 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simple passcode check so it's "only for you" without a full login system
     const passcode = prompt("Enter Admin Passcode:");
     if (passcode === "tharu123") {
       setIsAuthenticated(true);
@@ -38,30 +40,38 @@ const AdminDashboard = () => {
     setProjects(projs);
   };
 
-  const handleImageChange = (e) => {
-    setImages(Array.from(e.target.files));
+  // Helper to convert Google Drive sharing link to a direct image link
+  const getDirectImageUrl = (url) => {
+    if (!url) return '';
+    if (url.includes("drive.google.com/file/d/")) {
+      try {
+        const id = url.split("/d/")[1].split("/")[0];
+        return `https://drive.google.com/uc?export=view&id=${id}`;
+      } catch (e) {
+        return url;
+      }
+    }
+    return url;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (images.length === 0) return alert("Please upload at least one image");
+    if (!image1) return alert("Please provide at least the first image link");
     
     setLoading(true);
     try {
-      const imageUrls = [];
-      
-      for (const image of images) {
-        const imageRef = ref(storage, `projects/${Date.now()}_${image.name}`);
-        const snapshot = await uploadBytes(imageRef, image);
-        const url = await getDownloadURL(snapshot.ref);
-        imageUrls.push(url);
-      }
+      const imageUrls = [
+        getDirectImageUrl(image1),
+        getDirectImageUrl(image2),
+        getDirectImageUrl(image3)
+      ].filter(url => url !== ''); // Remove empty links
 
       await addDoc(collection(db, "projects"), {
         title,
         category,
         description,
         behanceLink,
+        figmaLink,
         images: imageUrls,
         createdAt: new Date()
       });
@@ -71,7 +81,10 @@ const AdminDashboard = () => {
       setCategory('');
       setDescription('');
       setBehanceLink('');
-      setImages([]);
+      setFigmaLink('');
+      setImage1('');
+      setImage2('');
+      setImage3('');
       fetchProjects();
       
     } catch (err) {
@@ -118,17 +131,32 @@ const AdminDashboard = () => {
             </div>
 
             <div className="form-group">
-              <label>Behance Link</label>
+              <label>Behance Link (Optional)</label>
               <input type="url" value={behanceLink} onChange={(e) => setBehanceLink(e.target.value)} placeholder="https://behance.net/..." />
             </div>
 
             <div className="form-group">
-              <label>Upload Design Images (Select 2-3 images)</label>
-              <input type="file" multiple accept="image/*" onChange={handleImageChange} required />
+              <label>Figma Link (Optional)</label>
+              <input type="url" value={figmaLink} onChange={(e) => setFigmaLink(e.target.value)} placeholder="https://figma.com/..." />
+            </div>
+
+            <div className="form-group">
+              <label>Image 1 Link (Main Cover - Google Drive link allowed) *</label>
+              <input type="url" value={image1} onChange={(e) => setImage1(e.target.value)} required placeholder="https://drive.google.com/file/d/..." />
+            </div>
+
+            <div className="form-group">
+              <label>Image 2 Link (Optional)</label>
+              <input type="url" value={image2} onChange={(e) => setImage2(e.target.value)} placeholder="https://drive.google.com/file/d/..." />
+            </div>
+
+            <div className="form-group">
+              <label>Image 3 Link (Optional)</label>
+              <input type="url" value={image3} onChange={(e) => setImage3(e.target.value)} placeholder="https://drive.google.com/file/d/..." />
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? "Uploading..." : "Save Project"}
+              {loading ? "Saving..." : "Save Project"}
             </button>
           </form>
         </div>

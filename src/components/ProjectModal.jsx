@@ -41,11 +41,18 @@ const ProjectModal = ({ project, onClose }) => {
             <h3>Case Study</h3>
             <p className="modal-desc">{project.description}</p>
             
-            {project.behanceLink && (
-              <a href={project.behanceLink} target="_blank" rel="noreferrer" className="btn btn-primary modal-btn">
-                View on Behance <ExternalLink size={18} />
-              </a>
-            )}
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              {project.behanceLink && (
+                <a href={project.behanceLink} target="_blank" rel="noreferrer" className="btn btn-primary modal-btn">
+                  View on Behance <ExternalLink size={18} />
+                </a>
+              )}
+              {project.figmaLink && (
+                <a href={project.figmaLink} target="_blank" rel="noreferrer" className="btn btn-secondary glass-panel modal-btn">
+                  View in Figma <ExternalLink size={18} />
+                </a>
+              )}
+            </div>
           </div>
         </motion.div>
       </motion.div>
