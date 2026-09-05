@@ -33,7 +33,8 @@ const Hero = () => {
 
           <div className="hero-actions">
             <motion.a 
-              href="#projects" 
+              onClick={(e) => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); }}
+              style={{cursor: 'pointer'}}
               className="btn btn-primary"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -42,7 +43,8 @@ const Hero = () => {
               <ArrowRight size={20} />
             </motion.a>
             <motion.a 
-              href="#contact" 
+              onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+              style={{cursor: 'pointer'}}
               className="btn btn-secondary glass-panel"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
