@@ -35,7 +35,16 @@ const AdminDashboard = () => {
     const querySnapshot = await getDocs(collection(db, "projects"));
     const projs = [];
     querySnapshot.forEach((doc) => {
-      projs.push({ id: doc.id, ...doc.data() });
+      const data = doc.data();
+      // Fix old Google Drive links on the fly
+      if (data.images) {
+        data.images = data.images.map(img => 
+          img.includes('drive.google.com/uc?export=view&id=') 
+            ? img.replace('uc?export=view&id=', 'thumbnail?id=') + '&sz=w1920'
+            : img
+        );
+      }
+      projs.push({ id: doc.id, ...data });
     });
     setProjects(projs);
   };
@@ -46,7 +55,8 @@ const AdminDashboard = () => {
     if (url.includes("drive.google.com/file/d/")) {
       try {
         const id = url.split("/d/")[1].split("/")[0];
-        return `https://drive.google.com/uc?export=view&id=${id}`;
+        // Using thumbnail endpoint which is much more reliable for hotlinking
+        return `https://drive.google.com/thumbnail?id=${id}&sz=w1920`;
       } catch (e) {
         return url;
       }

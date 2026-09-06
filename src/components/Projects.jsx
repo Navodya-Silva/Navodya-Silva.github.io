@@ -17,7 +17,16 @@ const Projects = () => {
         const querySnapshot = await getDocs(collection(db, "projects"));
         const fetchedProjects = [];
         querySnapshot.forEach((doc) => {
-          fetchedProjects.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+          // Fix old Google Drive links on the fly
+          if (data.images) {
+            data.images = data.images.map(img => 
+              img.includes('drive.google.com/uc?export=view&id=') 
+                ? img.replace('uc?export=view&id=', 'thumbnail?id=') + '&sz=w1920'
+                : img
+            );
+          }
+          fetchedProjects.push({ id: doc.id, ...data });
         });
         // Sort by createdAt if needed, or just set it
         setProjects(fetchedProjects);
