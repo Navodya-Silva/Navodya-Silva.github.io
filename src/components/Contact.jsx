@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Mail, Briefcase, Globe, PenTool } from 'lucide-react';
+import { Mail, Globe, MessageCircle, Download } from 'lucide-react';
 import './Contact.css';
 
 const Contact = () => {
@@ -32,35 +32,39 @@ const Contact = () => {
               </div>
             </div>
             
-            <div className="social-links">
-              <a href="#" className="social-link" aria-label="Email">
-                <Mail size={20} />
+            <div className="social-links" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+              <a href="mailto:tharushisilva2468@gmail.com" className="btn btn-secondary glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+                <Mail size={18} /> Email Me
               </a>
-              <a href="#" className="social-link" aria-label="Work">
-                <Briefcase size={20} />
+              <a href="https://wa.me/94767277484" target="_blank" rel="noreferrer" className="btn btn-secondary glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+                <MessageCircle size={18} /> WhatsApp
               </a>
-              <a href="#" className="social-link" aria-label="Portfolio">
-                <Globe size={20} />
-              </a>
-              <a href="#" className="social-link" aria-label="Design">
-                <PenTool size={20} />
-              </a>
+              {/* <a href="YOUR_RESUME_LINK_HERE" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+                <Download size={18} /> Download Resume
+              </a> */}
             </div>
           </div>
           
-          <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            {/* Replace YOUR_WEB3FORMS_KEY with your actual Web3Forms access key */}
+            <input type="hidden" name="access_key" value="96b75b1a-ae0c-431e-ba19-2fb46abf3a9e" />
+            
             <div className="form-group">
               <label htmlFor="name">Name</label>
-              <input type="text" id="name" placeholder="John Doe" />
+              <input type="text" id="name" name="name" placeholder="John Doe" required />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" placeholder="john@example.com" />
+              <input type="email" id="email" name="email" placeholder="john@example.com" required />
             </div>
             <div className="form-group">
               <label htmlFor="message">Message</label>
-              <textarea id="message" rows="4" placeholder="Hello Navodya..."></textarea>
+              <textarea id="message" name="message" rows="4" placeholder="Hello Tharushi..." required></textarea>
             </div>
+            
+            {/* Optional: Add a redirect URL after submission */}
+            {/* <input type="hidden" name="redirect" value="https://yourwebsite.com/success" /> */}
+
             <motion.button 
               type="submit" 
               className="btn btn-primary"
