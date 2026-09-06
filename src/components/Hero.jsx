@@ -22,7 +22,7 @@ const Hero = () => {
           </motion.div>
           
           <h1 className="hero-title">
-            Hi, I'm <span className="text-gradient">Navodya</span>.<br />
+            Hi, I'm <span className="text-gradient">Tharushi Navodya</span>.<br />
             Crafting Digital<br />
             Experiences that Matter.
           </h1>
