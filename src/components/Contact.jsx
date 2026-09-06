@@ -39,9 +39,9 @@ const Contact = () => {
               <a href="https://wa.me/94767277484" target="_blank" rel="noreferrer" className="btn btn-secondary glass-panel" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
                 <MessageCircle size={18} /> WhatsApp
               </a>
-              {/* <a href="YOUR_RESUME_LINK_HERE" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
+              <a href="https://drive.google.com/file/d/1-Oe23Xb6jauSUAYT75ylArtweJYMaef3/view?usp=sharing" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
                 <Download size={18} /> Download Resume
-              </a> */}
+              </a>
             </div>
           </div>
           
